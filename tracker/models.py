@@ -37,5 +37,6 @@ class Bet(models.Model):
     # Imported datetime module to get an overridable default value of current user date.
     bet_date = models.DateField(default=timezone.now)
 
-
+    def __str__(self):
+        return f"{self.game} (£{self.amount}) {self.bet_date}"
 
