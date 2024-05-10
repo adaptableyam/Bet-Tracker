@@ -13,6 +13,7 @@ The bet class needs:
 - profit: if no win, = 0. otherwise use formula above
 - loss: if win = 0. otherwise, = amount
 """
+
 class Bet(models.Model): 
     class Game(models.TextChoices):
         ROULETTE = "RLT", "Roulette"
@@ -23,16 +24,18 @@ class Bet(models.Model):
         POKER = "PKR", "Poker"
         SPORTS = "SPT", "Sports"
         OTHER = "OTH", "Other"
+   
+    BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
     # Offer a predetermined selection of most popular games, to make showing data easier.
-    game = models.CharField(max_length=100, choices=Game.choices, default=Game.SPORTS)
+    game = models.CharField(max_length=100, choices=Game.choices, default=Game.ROULETTE)
     # Amount wagered up to 10,000,000.00
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     # keeping odds to decimal in order to speed up development, although less commonly used than ratio odds
-    decimal_odds = models.DecimalField(max_digits=8, decimal_places=2)
+    decimal_odds = models.DecimalField(blank=True, null=True, max_digits=8, decimal_places=2)
     # Simple Win or Loss box, defaults to loss
-    win = models.BooleanField(default=False)
+    win = models.BooleanField(choices=BOOL_CHOICES, default=False)
     # Profit column, will be negative value of 'amount' if 'win' == false
-    # if 'win' == True: profit = amount * odds      ** Need to convert odds to 
+    # if 'win' == True: profit = amount * odds  
     profit = models.DecimalField(max_digits=12, decimal_places=2)
     # Imported datetime module to get an overridable default value of current user date.
     bet_date = models.DateField(default=timezone.now)

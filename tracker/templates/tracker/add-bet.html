@@ -1,18 +1,62 @@
 {% extends 'tracker/base.html' %}
 {% block body %}
-<h1>
-    This is the add bet page, with included form
-</h1>
-<form class="shadow-lg m-10 rounded-lg" method="post">
-    {% csrf_token %}
-    <div class="form-container px-5 py-5">
-        <div class="mb-3">
-            <label>Select Bet Type/Casino Game</label>
+
+<div class="grid justify-items-center mt-10">
+    <form class="shadow-md px-5 m-10 bg-white rounded-lg" method="post">
+        {% csrf_token %}
+        <div class="form-container px-10 py-10">
+            <div class="">
+                <label>Select Bet Type/Casino Game</label>
+            </div>
+            <div class="mb-5">
+                {{ bet_form.game }}
+            </div>
+            <div class="">
+                <label>Amount Wagered (£)</label>
+            </div>
+            <div class="mb-5">
+                {{ bet_form.amount }}
+            </div>
+            <!-- This field is hidden by default and shows when the 'SPORTS' selector is active -->
+            <div id="odds_field" style="display: none;">
+                <div class="">
+                    <label>Odds (In Decimal)</label>
+                </div>
+                <div class="mb-5">
+                    {{ bet_form.decimal_odds }}
+                </div>
+            </div>
+            <div class="">
+                <label>Did You Win? (Y/N)</label>
+            </div>
+            
+            {% for radio in bet_form.win %}
+            <label class="px-3" for="{{ radio.id_for_label }}">
+                {{ radio.choice_label }}
+                <span>{{ radio.tag }}</span>
+            </label>
+            
+            {% endfor %}
+            <!-- This field will be hidden by default and will show when the 'yes' field is selected from the win selector. -->
+            <div id="profit_field" style="display: block;">
+                <div class="mt-5">
+                    <label>Profit (£)</label>
+                </div>
+                <div class="mb-5">
+                    {{ bet_form.profit }}
+                </div>
+            </div>
+            
+            <div class="mt-5">
+                <label>Date of Bet</label>
+            </div>
+            <div class="mb-10">
+                {{ bet_form.bet_date }}
+            </div>
+            <div class="grid justify-items-center">
+                <button type="submit" class="bg-indigo-500 px-5 py-2 rounded-lg text-white hover:bg-indigo-600 hover:shadow-md">Add Bet</button>
+            </div>
         </div>
-        <div class="block text-sm font-medium leading-6 text-gray-900">
-            {{ bet_form.game }}
-        </div>
-    </div>
-    
-</form>
+    </form>
+</div>
 {% endblock %}
